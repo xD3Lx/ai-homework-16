@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "mcp-server-notes": {
+      "command": "/Users/delrius/ai/ai-homework-16/.venv/bin/python",
+      "args": [
+        "/Users/delrius/ai/ai-homework-16/server.py"
+      ]
+    }
+  }
+}
+
