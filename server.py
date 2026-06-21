@@ -44,11 +44,11 @@ def generate_note_id() -> str:
 
 
 @mcp.tool()
-def create_note(text: str, tag: str = "default") -> dict[str, Any]:
-    text = text.strip()
+def create_note(content: str, tag: str = "default") -> dict[str, Any]:
+    content = content.strip()
     tag = tag.strip().lower() if tag.strip() else "default"
 
-    if not text:
+    if not content:
         return {
             "status": "error",
             "message": "Note text should not be empty.",
@@ -58,7 +58,7 @@ def create_note(text: str, tag: str = "default") -> dict[str, Any]:
 
     note = {
         "id": generate_note_id(),
-        "text": text,
+        "text": content,
         "tag": tag,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -74,9 +74,8 @@ def create_note(text: str, tag: str = "default") -> dict[str, Any]:
 
 
 @mcp.tool()
-def search_notes(query: str, tag: str | None = None) -> dict[str, Any]:
+def search_notes(query: str) -> dict[str, Any]:
     query = query.strip().lower()
-    tag = tag.strip().lower() if tag else None
 
     if not query:
         return {
@@ -90,15 +89,13 @@ def search_notes(query: str, tag: str | None = None) -> dict[str, Any]:
 
     for note in notes:
         note_text = str(note.get("text", "")).lower()
-        note_tag = str(note.get("tag", "")).lower()
 
-        if (query in note_text) and (tag is None or tag == note_tag):
+        if query in note_text:
             results.append(note)
 
     return {
         "status": "success",
         "query": query,
-        "tag": tag,
         "count": len(results),
         "results": results,
     }
